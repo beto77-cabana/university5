@@ -47,5 +47,46 @@ namespace LinqSnippets
                     .Where(num => num != 9) //all but the 9
                     .OrderBy(num => num); //at the end, we order ascending
         }
+
+        public static void SearchExamples()
+        {
+            List<string> textList = new List<string>
+            {
+                "a",
+                "bx",
+                "c",
+                "d",
+                "e",
+                "cj",
+                "f",
+                "c"
+            };
+
+            //1. First of all elements
+            var first = textList.First();
+
+            //2. First element that is "c"
+            var cText = textList.First(text => text.Equals("c"));
+
+            // 3. First element that contains "j"
+            var jText = textList.First(text => text.Contains("j"));
+
+            // 4. First element that contains "z" or default
+            var firstOrDefault = textList.FirstOrDefault(text => text.Contains("z")); // "" or first element that contains "z"
+
+            // 5. Last element that contains "z" or default
+            var lastOrDefault = textList.LastOrDefault(text => text.Contains("z")); // "" or last element that contains "z"
+
+            // 6. Single Values
+            var uniqueText = textList.Single();
+            var uniqueorDefault = textList.SingleOrDefault();
+
+            int[] evenNumbers = { 0, 2, 4, 6, 8 };
+            int[] otherEvenNumbers = { 0, 2, 6 };
+
+            //Obtain {4,8}
+            var myEvenNumbers = evenNumbers.Except(otherEvenNumbers);
+        }
+
     }
 }
