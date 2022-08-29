@@ -88,5 +88,91 @@ namespace LinqSnippets
             var myEvenNumbers = evenNumbers.Except(otherEvenNumbers);
         }
 
+        static public void MultipleSelect()
+        {
+            string[] myOpinions =
+            {
+                "Opinion 1, text1",
+                "Opinion 2, text2",
+                "Opinion 3, text3"
+            };
+            var myOpinionSelection = myOpinions.SelectMany(opinion => opinion.Split(","));
+
+            var enterprises = new[]
+            {
+                new Enterprise()
+                {
+                    Id = 1,
+                    Name = "Enterprise 1",
+                    Employees = new[]
+                    {
+                        new Employee
+                        {
+                            Id = 1,
+                            Name = "Martín",
+                            Email = "martin@gmail.com",
+                            Salary = 3000
+                        },
+                        new Employee
+                        {
+                            Id = 2,
+                            Name = "Pepe",
+                            Email = "Pepe@gmail.com",
+                            Salary = 1000
+                        },
+                        new Employee
+                        {
+                            Id = 3,
+                            Name = "Juanjo",
+                            Email = "Juanjo@gmail.com",
+                            Salary = 2000
+                        }
+                    }
+                },
+
+                new Enterprise()
+                {
+                    Id = 2,
+                    Name = "Enterprise 2",
+                    Employees = new[]
+                    {
+                        new Employee
+                        {
+                            Id = 4,
+                            Name = "Ana",
+                            Email = "martin@gmail.com",
+                            Salary = 3000
+                        },
+                        new Employee
+                        {
+                            Id = 5,
+                            Name = "María",
+                            Email = "María@gmail.com",
+                            Salary = 1500
+                        },
+                        new Employee
+                        {
+                            Id = 6,
+                            Name = "Marta",
+                            Email = "Marta@gmail.com",
+                            Salary = 4000
+                        }
+                    }
+                }
+            };
+            //Obtain all employees of all Enterprises
+            var EmployeeList = enterprises.SelectMany(enterprise => enterprise.Employees);
+
+            // Know if any list is empty
+            bool hasEnterprises = enterprises.Any();
+            bool hasEmployees = enterprises.Any(enterprises=>enterprises.Employees.Any());
+
+            // All enterprises at least employees with at least 1000$ of salary
+            bool hasEmployeeWithSalaryMoreThanOrEqual1000=
+                enterprises.Any(enterprises =>
+                    enterprises.Employees.Any(employee => employee.Salary >= 1000));
+        }
+
+
     }
 }
