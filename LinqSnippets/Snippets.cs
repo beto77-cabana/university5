@@ -9,7 +9,7 @@ namespace LinqSnippets
     {
         static public void BasicLinQ()
         {
-            string[] cars =
+            string[] cars =     //lista de cadena de texto
             {
                 "Audi A5",
                 "VW Golf",
@@ -19,6 +19,18 @@ namespace LinqSnippets
                 "Seat Ibiza",
                 "Seat León"
             };
+            // 1. SELECT * of cars (SELECT ALL CARS)
+            var carList = from car in cars select car;
+            foreach (var car in carList)
+            {
+                Console.WriteLine(car);
+            }
+            // 2. SELECT WHERE car is audi (SELECT AUDIs)
+            var audiList = from car in cars where car.Contains("Audi") select car;
+            foreach (var audi in audiList)
+            {
+                Console.WriteLine(audi);
+            }
         }
     }
 }
