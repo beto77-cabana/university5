@@ -7,7 +7,7 @@ namespace LinqSnippets
 {
     public class Snippets
     {
-        static public void BasicLinQ()
+        public static void BasicLinQ()
         {
             string[] cars = //lista de cadena de texto
             {
@@ -35,7 +35,7 @@ namespace LinqSnippets
         }
 
         //Numbers Examples
-        static public void LinqNumbers()
+        public static void LinqNumbers()
         {
             List<int> numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             //Each Number multiplied by 3
@@ -81,7 +81,7 @@ namespace LinqSnippets
                 textList.LastOrDefault(text =>
                     text.Contains("z")); // "" or last element that contains "z"
 
-            // 6. Single Values
+            // 6. Single Values  (evitar q haya elem repetidos)
             var uniqueText = textList.Single();
             var uniqueorDefault = textList.SingleOrDefault();
 
@@ -92,7 +92,7 @@ namespace LinqSnippets
             var myEvenNumbers = evenNumbers.Except(otherEvenNumbers);
         }
 
-        static public void MultipleSelect()
+        public static void MultipleSelect()
         {
             string[] myOpinions =
             {
@@ -169,17 +169,17 @@ namespace LinqSnippets
 
             // Know if any list is empty
             bool hasEnterprises = enterprises.Any();
-            bool hasEmployees = enterprises.Any(enterprises => enterprises.Employees.Any());
+            bool hasEmployees = enterprises.Any(enterprise => enterprise.Employees.Any());
 
             // All enterprises at least employees with at least 1000$ of salary
             bool hasEmployeeWithSalaryMoreThanOrEqual1000 =
-                enterprises.Any(enterprises =>
-                    enterprises.Employees.Any(employee => employee.Salary >= 1000));
+                enterprises.Any(enterprise =>
+                    enterprise.Employees.Any(employee => employee.Salary >= 1000));
         }
 
         //Multiple Colecciones
 
-        static public void linqCollections()
+        public static void linqCollections()
         {
             var firstList = new List<string>() { "a", "b", "c" };
             var secondList = new List<string>() { "a", "c", "d" };
@@ -224,11 +224,11 @@ namespace LinqSnippets
         }
 
         //Saltar elementos a la hora de la busqueda para hacer una busqueda mas avanzada o paginado
-        static public void SkipTakeLinq()
+        public static void SkipTakeLinq()
         {
             var myList = new[]
             {
-                1,2,3,4,5,6,7,8,9,10,
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             };
             // SKIP
             var skipTwoFirstValues = myList.Skip(2); //{3,4,5,6,7,8,9,10}
@@ -242,22 +242,22 @@ namespace LinqSnippets
         }
 
         //Paging with Skip and Take
-        static public IEnumerable<T> GetPage<T>(IEnumerable<T> collection, int pageNumber,
+        public static IEnumerable<T> GetPage<T>(IEnumerable<T> collection, int pageNumber,
             int resultsPerPage)
         {
             int startIndex = (pageNumber - 1) * resultsPerPage;
             return collection.Skip(startIndex).Take(resultsPerPage);
         }
 
-        // Variables
-        static public void LinqVariables()
+        // Variables (declarar variables dentro de las consultas)
+        public static void LinqVariables()
         {
             int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var aboveAverage = from number in numbers
                 let average = numbers.Average()
                 let nSquared = Math.Pow(number, 2)
-                    where nSquared > average
-                    select number;
+                where nSquared > average
+                select number;
             Console.WriteLine("Average:{0}", numbers.Average());
             foreach (int number in aboveAverage)
             {
@@ -266,24 +266,83 @@ namespace LinqSnippets
         }
 
         // ZIP
-        static public void ZipLinq()
+        public static void ZipLinq()
         {
             int[] numbers = { 1, 2, 3, 4, 5 };
             string[] stringNumbers = { "one", "two", "three", "four", "five" };
             IEnumerable<string> zipNumbers = numbers.Zip(stringNumbers, (number, word) => number
-            + "=" + word);
-                //{"1=one", "2=two", "3=three",...}
+                + "=" + word);
+            //{"1=one", "2=two", "3=three",...}
         }
 
         // Repeat & Range
-        static public void repeatRangeLinq()
+        public static void repeatRangeLinq()
         {
             // Generate Collection from 1 -1000 --> RANGE
             IEnumerable<int> first1000 = Enumerable.Range(1, 1000);
 
             // Repeat a value N times
-            IEnumerable<string> fiveXs = Enumerable.Repeat("X", 5);// {"X","X","X","X","X"}
+            IEnumerable<string> fiveXs = Enumerable.Repeat("X", 5); // {"X","X","X","X","X"}
         }
 
+        public static void studentLinq()
+        {
+            var classRoom = new[]
+            {
+                new Student
+                {
+                    Id = 1,
+                    Name = "Martin",
+                    Grade = 90,
+                    Certified = true,
+                },
+                new Student
+                {
+                    Id = 2,
+                    Name = "Juan",
+                    Grade = 50,
+                    Certified = false,
+                },
+                new Student
+                {
+                    Id = 3,
+                    Name = "Ana",
+                    Grade = 96,
+                    Certified = true,
+                },
+                new Student
+                {
+                    Id = 4,
+                    Name = "Álvaro",
+                    Grade = 10,
+                    Certified = false,
+                },
+                new Student
+                {
+                    Id = 5,
+                    Name = "Pedro",
+                    Grade = 50,
+                    Certified = true,
+                },
+            };
+
+            var certifiedStudents = from student in classRoom
+                where student.Certified
+                select student;
+            var notCertifiedStudents = from student in classRoom
+                where student.Certified == false
+                select student;
+            var approvedStudentsNames = from student in classRoom
+                where student.Grade >= 50 && student.Certified == true
+                select student.Name;
+        }
+
+        // ALL
+        public static void AllLinq()
+        {
+            var numbers = new List<int>() { 1,2,3,4,5};
+            bool allAreSmallerThan10 = numbers.All(x => x < 10); //true
+            bool allAreBigerOrEqual = numbers.All(x => x >= 2); //false
+        }
     }
 }

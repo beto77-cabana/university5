@@ -68,7 +68,7 @@ namespace UniversityApiBackend.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)  //en caso de que haya habido un error de concurrencia
             {
                 if (!UserExists(id))
                 {
@@ -80,7 +80,7 @@ namespace UniversityApiBackend.Controllers
                 }
             }
 
-            return NoContent();
+            return NoContent(); // se devuelve un 204
         }
 
         // POST: api/Users
@@ -94,7 +94,7 @@ namespace UniversityApiBackend.Controllers
             }
 
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  //awai una espera activa p' q el contexto pueda guardar los cambios de forma sincrona y q se persistan los cambios en la bs
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }

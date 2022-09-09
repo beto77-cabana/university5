@@ -37,7 +37,7 @@ namespace UniversityApiBackend.Models.DataModels
         public Chapter Chapters { get; set; } = new  Chapter();
 
         [Required]
-        public ICollection<Student> students { get; set; } = new List<Student>();
+        public ICollection<Student> Students { get; set; } = new List<Student>();
 
     }
 }
