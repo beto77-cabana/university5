@@ -343,6 +343,168 @@ namespace LinqSnippets
             var numbers = new List<int>() { 1,2,3,4,5};
             bool allAreSmallerThan10 = numbers.All(x => x < 10); //true
             bool allAreBigerOrEqual = numbers.All(x => x >= 2); //false
+
+            var emptyList = new List<int>();
+            bool allNumbersAreGreaterThan0 = numbers.All(x => x >= 0); //true
+        }
+        //agregate
+        public static void AgregateQueries()
+        {
+            int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            //sum all numbers
+            int sum = numbers.Aggregate((prevSum, current) => prevSum + current);
+            // 0, 1 => 1
+            // 1, 2 => 3
+            // 3, 4 => 7
+            // etc
+
+            string[] words = { "hello", "my", "name", "is", "Martin" };
+            string greeting = words.Aggregate((prevSum, current) => prevSum + current);
+
+            //"", "hello," =>hello,
+            //"hello,", "my" => hello,my
+            //"hello, my", "name" =>hello, my name
+        }
+
+        //Distinct
+        public static void distinctValues()
+        {
+            int[] numbers = { 1,2,3,4,5,6,4,3,2,1};
+            IEnumerable<int> distinctValues = numbers.Distinct();
+        }
+
+        //GroupBy
+        public static void groupByExamples()
+        {
+            List<int> numbers = new List<int>() { 1, 2, 3, 4, 5 ,6, 7, 8,9};
+
+            //Obtain only even numbers and generate two groups
+            var grouped = numbers.GroupBy(x => x % 2 == 0);
+            //We will have two groups:
+            //1. The group that doesnt fit the condition (add numbers)
+            //2. The group that fits the condition (even numbers)
+
+            foreach (var group in grouped)
+            {
+                foreach (var value in group)
+                {
+                    Console.WriteLine(value);//1,3,5,7,9 ...2,4,6,8 (first the odds and then the even)
+                }
+            }
+            //other example
+            var classRoom = new[]
+            {
+                new Student
+                {
+                    Id = 1,
+                    Name = "Martin",
+                    Grade = 90,
+                    Certified = true,
+                },
+                new Student
+                {
+                    Id = 2,
+                    Name = "Juan",
+                    Grade = 50,
+                    Certified = false,
+                },
+                new Student
+                {
+                    Id = 3,
+                    Name = "Ana",
+                    Grade = 96,
+                    Certified = true,
+                },
+                new Student
+                {
+                    Id = 4,
+                    Name = "Álvaro",
+                    Grade = 10,
+                    Certified = false,
+                },
+                new Student
+                {
+                    Id = 5,
+                    Name = "Pedro",
+                    Grade = 50,
+                    Certified = true,
+                },
+            };
+            //agrupacion por los que estan certificados y los que no
+
+            var certifiedQuery = classRoom.GroupBy(student => student.Certified);
+
+            //We obtain two groups
+            //1. Not certified Students
+            //2. Certified Students
+
+            foreach (var group in certifiedQuery)
+            {
+                Console.WriteLine("---------------{0}------------------", group.Key);
+                foreach (var student in group)
+                {
+                    Console.WriteLine(student.Name);//1,3,5,7,9 ...2,4,6,8 (first the odds and then the even)
+                }
+            }
+
+        }
+
+        public static void relationLinq()
+        {
+            List<Post> posts = new List<Post>()
+            {
+                new Post()
+                {
+                    Id = 1,
+                    Title = "My first Post",
+                    Content = "My first content",
+                    Created = DateTime.Now,
+                    Comments = new List<Comment>()
+                    {
+                        new Comment()
+                        {
+                            Id = 1,
+                            Created = DateTime.Now,
+                            Title = "My first comment ",
+                            Content = "My Content"
+                        },
+                        new Comment()
+                        {
+                            Id = 2,
+                            Created = DateTime.Now,
+                            Title = "My second comment ",
+                            Content = "My other contet"
+                        }
+                    }
+                },
+                new Post()
+                {
+                    Id = 2,
+                    Title = "My second Post",
+                    Content = "My second content",
+                    Created = DateTime.Now,
+                    Comments = new List<Comment>()
+                    {
+                        new Comment()
+                        {
+                            Id = 3,
+                            Created = DateTime.Now,
+                            Title = "My other comment ",
+                            Content = "My New Content"
+                        },
+                        new Comment()
+                        {
+                            Id = 4,
+                            Created = DateTime.Now,
+                            Title = "My other new comment ",
+                            Content = "My new contet"
+                        }
+                    }
+                }
+            };
+            // sacar los comentarios de un post
+            var commentsContent = posts.SelectMany(post => post.Comments,
+                (post, comment) => new { PostId = post, CommentContent = comment.Content });
         }
     }
 }
